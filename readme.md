@@ -14,3 +14,9 @@ where @data.json is
 	"text":"Hello!"
 }
 ```
+
+#### Known issues
+```cassandraql
+panic: runtime error: index out of range [0] with length 0
+```
+...Happend when token is wrong or connection to Discord failed.

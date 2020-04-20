@@ -23,6 +23,7 @@ func (d *Discord)Init(token string){
 		d.channels[v.Name] = v.ID
 		fmt.Printf("%+v -> %+v\n", v.ID, v.Name)
 	}
+	d.client.Close()
 }
 
 func (d *Discord)GetChID(name string) string{
@@ -33,9 +34,11 @@ func (d *Discord)GetChID(name string) string{
 }
 
 func (d *Discord)SendMessage(ch_name, text string){
+	d.client.Open()
 	ch_id := d.GetChID(ch_name)
 	if ch_id==""{return}
 	d.client.ChannelMessageSend(ch_id, text)
+	d.client.Close()
 }
 
 type Request struct {
@@ -57,9 +60,9 @@ func Parse (c *gin.Context) *Request{
 func main(){
 
 	var discord Discord
-	discord.Init("Njk4ODE2MzA4MD...AYqA-JMYI")
-	discord.client.AddHandler(messageCreate)
-
+	discord.Init("Njk4ODE2MzA4MDk...        ...kbZZFOiy7RI-hp6CuTk")
+	//discord.client.AddHandler(messageCreate)
+	//gin.SetMode(gin.ReleaseMode)
 	r := gin.New()
 	r.POST("/", func(c *gin.Context) {
 		req := Parse(c)
@@ -68,11 +71,9 @@ func main(){
 		}
 
 	})
-	gin.SetMode(gin.ReleaseMode)
-	r.Run(":5000")
-
+	r.Run(":5001")
 }
 
-func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate){
-	//todo some reactions on messages
-}
+//func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate){
+//	//todo some reactions on messages
+//}
