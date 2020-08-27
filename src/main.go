@@ -24,8 +24,9 @@ func Parse (c *gin.Context) *Request{
 
 func main(){
 	var discord Discord
-	discord.Init("Njk4ODE2MzA4MDk5NDE2MTM0.XpLVZw.30eFG9NSCpnjViR_iZFkHRZGFwU")
+	discord.Init("...Og3vCBGFx64orW8OjbI7ZOQIwKs")
 	discord.client.AddHandler(messageCreate)
+	gin.SetMode(gin.ReleaseMode)
 	r := gin.New()
 	r.POST("/", func(c *gin.Context) {
 		req := Parse(c)

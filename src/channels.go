@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/bwmarrin/discordgo"
+	"os"
 )
 
 type Discord struct {
@@ -13,11 +14,16 @@ type Discord struct {
 func (d *Discord)Init(token string){
 	conn, _ := discordgo.New("Bot " + token)
 	d.client = conn
-	d.client.Open()
+	err := d.client.Open()
+	if err != nil {
+		fmt.Print(err)
+		os.Exit(-1)
+	}
 	gld, _ := d.client.Guild(d.client.State.Guilds[0].ID)
+	channels, _ := d.client.GuildChannels(gld.ID)
 	d.channels = make(map[string]string)
-	fmt.Print("Searching for channels:\n")
-	for _,v := range gld.Channels{
+	fmt.Printf("Searching for channels in %v:\n", gld.Name)
+	for _,v := range channels{
 		d.channels[v.Name] = v.ID
 		fmt.Printf("%+v -> %+v\n", v.ID, v.Name)
 	}
